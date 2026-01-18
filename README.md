@@ -1,63 +1,17 @@
-# 🌴 Agent de Voyage Intelligent - Claude + SerpAPI
+# LangChain Multi-Model Travel Agent Lab
 
-Agent de voyage professionnel utilisant **Claude Sonnet 4** et **SerpAPI** pour trouver les meilleurs prix de vols en temps réel.
+Experimental lab testing LangChain with Gemini 2.0 Flash (Google Vertex AI) and Claude Sonnet (Anthropic) for building a multi-tool conversational agent.
 
-## 🚀 Installation
+## Overview
 
-```bash
-# Cloner le projet
-git clone <votre-repo>
-cd lab-toolchains
+This project explores LangChain's agent framework to create a travel planning assistant with:
+- Multi-model LLM support (Gemini 2.0 Flash & Claude Sonnet 4)
+- Tool binding with 12 integrated tools (flights, hotels, restaurants, etc.)
+- Iterative agent workflow with multi-step reasoning
+- Structured JSON logging with Prometheus metrics
+- Streamlit web interface
 
-# Créer l'environnement virtuel
-python -m venv .venv
-source .venv/bin/activate  # Linux/Mac
-
-# Installer les dépendances
-pip install -r requirements.txt
-```
-
-## 🔑 Configuration
-
-Créer un fichier `.env` à la racine :
-
-```bash
-# OBLIGATOIRE - Claude API
-ANTHROPIC_API_KEY=sk-ant-api03-...
-
-# OPTIONNEL - SerpAPI pour prix réels (sinon mock data)
-SERPAPI_KEY=votre_clé_serpapi
-```
-
-### Obtenir les clés API
-
-- **Claude API** : https://console.anthropic.com/
-- **SerpAPI** : https://serpapi.com/ (100 recherches gratuites/mois)
-
-## 📖 Utilisation
-
-### Mode Interactif (Recommandé)
-
-```bash
-python professional_travel_agent.py
-```
-
-**Commandes disponibles :**
-- Tapez votre demande de voyage en langage naturel
-- `aide` - Afficher l'aide
-- `quitter` - Sortir du programme
-
-### Exemples de demandes
-
-```
-Je veux aller à Cuba depuis Paris en mars 2026 pour 2 personnes
-
-Trouve-moi un vol Paris-New York pour le 15 avril avec hôtel 5 nuits
-
-Voyage à Tokyo depuis CDG, départ 1er juin, retour 10 juin, 1 personne
-```
-
-## 🏗️ Architecture Modulaire
+## Architecture
 
 ```
 lab-toolchains/
