@@ -7,6 +7,10 @@ import streamlit as st
 import os
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
+from utils.logger import ContextLogger
+
+# Logger pour debug
+logger = ContextLogger(__name__)
 
 # Configuration de la page
 st.set_page_config(
@@ -66,35 +70,32 @@ st.markdown("""
 
 load_dotenv()
 
-# Import de l'agent et des outils
-from agents.travel_agent_claude import ClaudeTravelAgent
-from agents.travel_agent_gemini import GeminiTravelAgent
+# Import de l'agent optimisé et des outils
+from agents.travel_agent import TravelAgent
 from agents.model_factory import ModelProvider
-from tools import (
-    search_flights, search_hotels, search_vacation_rentals,
-    find_nearby_attractions, find_cultural_activities,
-    recommend_restaurants, create_visit_itinerary,
-    generate_travel_map, calculate_total_cost, get_destination_context,
-    recommend_best_package, get_airport_code
-)
+from tools.travel_tools import create_all_tools
 
 
 @st.cache_resource
-def create_agent(_model_provider):
-    """Créer l'agent selon le provider choisi (mis en cache pour performance)"""
-    tools = [
-        get_airport_code,  # Nouvel outil en premier
-        search_flights, search_hotels, search_vacation_rentals,
-        find_nearby_attractions, find_cultural_activities,
-        recommend_restaurants, create_visit_itinerary,
-        generate_travel_map, calculate_total_cost, get_destination_context,
-        recommend_best_package
-    ]
+def create_agent(_model_provider, _fast_mode=True):
+    """Créer l'agent optimisé selon le provider choisi (mis en cache pour performance)
     
-    if _model_provider == "claude":
-        return ClaudeTravelAgent(tools=tools, temperature=0.5)
-    else:  # gemini
-        return GeminiTravelAgent(tools=tools, temperature=0.5)
+    Optimisations actives:
+    - Prompt caching (90% économie coûts)
+    - Détection d'intention automatique (small talk vs planning)
+    - Contexte conditionnel (prompt léger pour salutations)
+    - Fast mode par défaut (5 outils essentiels)
+    """
+    tools = create_all_tools()
+    
+    provider = ModelProvider.CLAUDE if _model_provider == "claude" else ModelProvider.GEMINI
+    
+    return TravelAgent(
+        tools=tools,
+        model_provider=provider,
+        temperature=0.3,  # Optimisé pour réponses rapides
+        fast_mode=_fast_mode  # 5 outils essentiels pour vitesse
+    )
 
 
 def initialize_session_state():
@@ -154,22 +155,15 @@ def _render_chat_interface():
         cultural_prefs = ', '.join(st.session_state.cultural) if st.session_state.cultural else 'art, histoire'
         cuisine_prefs = ', '.join(st.session_state.cuisine) if st.session_state.cuisine else 'cuisine locale'
         
-        enriched_prompt = f"""DEMANDE UTILISATEUR:
-{prompt}
-
-CONTEXTE DISPONIBLE (utilise si pertinent):
-- Profil: {st.session_state.travelers} voyageur(s), départ {st.session_state.origin}
-- Dates configurées: {departure_str} → {return_str}
-- Destination pré-remplie: {st.session_state.get('destination', 'non définie')}
-- Intérêts: {cultural_prefs}
-- Cuisine: {cuisine_prefs} ({st.session_state.budget})
-
-💡 Consigne: Privilégie les détails explicites de la demande. Utilise le contexte seulement pour compléter ce qui manque."""
+        # Le contexte est maintenant géré intelligemment par l'agent selon l'intention
+        # (small_talk vs planning)
         
         # Réponse de l'agent
         with st.chat_message("assistant"):
             # Conteneur pour afficher la progression
             status_container = st.empty()
+            progress_bar_container = st.empty()
+            response_container = st.empty()
             
             try:
                 # Afficher progression pendant l'attente
@@ -177,7 +171,7 @@ CONTEXTE DISPONIBLE (utilise si pertinent):
                 status_container.info(progress_text)
                 
                 # Progress bar pour montrer que ça travaille
-                progress_bar = st.progress(0)
+                progress_bar = progress_bar_container.progress(0)
                 
                 # Lancer l'agent dans un thread pour pouvoir afficher la progression
                 import threading
@@ -191,7 +185,9 @@ CONTEXTE DISPONIBLE (utilise si pertinent):
                 def run_agent():
                     try:
                         start = time.time()
-                        result["response"] = agent.plan_trip(enriched_prompt)
+                        # Envoyer le message brut pour permettre la détection d'intention
+                        # L'agent ajoutera automatiquement le contexte si nécessaire
+                        result["response"] = agent.chat(prompt)
                         result["duration"] = time.time() - start
                     except Exception as e:
                         result["error"] = str(e)
@@ -204,11 +200,11 @@ CONTEXTE DISPONIBLE (utilise si pertinent):
                 progress = 0
                 while agent_thread.is_alive():
                     progress = min(progress + 0.01, 0.95)  # Max 95% jusqu'à la fin
-                    progress_bar.progress(progress)
+                    progress_bar = progress_bar_container.progress(progress)
                     time.sleep(0.5)
                 
                 agent_thread.join()
-                progress_bar.progress(1.0)
+                progress_bar = progress_bar_container.progress(1.0)
                 
                 # Vérifier les résultats
                 if result["error"]:
@@ -219,15 +215,21 @@ CONTEXTE DISPONIBLE (utilise si pertinent):
                 
                 # Effacer le statut et la progress bar
                 status_container.empty()
-                progress_bar.empty()
+                progress_bar_container.empty()
                 
-                if response:
-                    # Afficher la réponse dans le chat (pas dans un empty())
-                    st.markdown(response)
+                # Log pour debug
+                logger.info(f"🔍 Response type: {type(response)}, length: {len(str(response)) if response else 0}")
+                
+                if response and len(str(response).strip()) > 0:
+                    # Afficher la réponse dans le conteneur dédié
+                    response_container.markdown(response)
                     st.caption(f"⏱️ Temps de traitement: {duration:.1f}s")
                     st.session_state.messages.append({"role": "assistant", "content": response})
                 else:
-                    st.warning("⚠️ Aucune réponse reçue de l'agent")
+                    error_msg = f"⚠️ Aucune réponse reçue de l'agent (response={response})"
+                    response_container.warning(error_msg)
+                    logger.error(f"❌ Empty response: {result}")
+                    st.session_state.messages.append({"role": "assistant", "content": error_msg})
                 
                 
                 # Détecter et afficher automatiquement la carte si elle a été générée
@@ -496,6 +498,13 @@ def main():
                     st.session_state.agent = create_agent(model_choice)
                     st.success(f"✅ Modèle changé: {model_choice.upper()}")
                     st.rerun()
+            
+            # Bouton pour réinitialiser la conversation
+            if st.button("🔄 Nouvelle conversation", use_container_width=True, help="Efface l'historique pour commencer une nouvelle planification"):
+                st.session_state.agent.reset_conversation()
+                st.session_state.messages = []
+                st.success("✅ Conversation réinitialisée !")
+                st.rerun()
         
         # Informations de base
         with st.expander("📋 Informations de base", expanded=True):

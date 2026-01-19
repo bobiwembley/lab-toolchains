@@ -860,3 +860,26 @@ def recommend_best_package(
     except Exception as e:
         logger.error(f"Error in recommend_best_package: {e}")
         return f"❌ Erreur: {str(e)}"
+
+
+def create_all_tools():
+    """
+    Retourne la liste de tous les outils disponibles pour l'agent.
+    
+    Returns:
+        Liste de tous les outils LangChain
+    """
+    return [
+        get_airport_code,
+        get_destination_context,
+        search_flights,
+        search_hotels,
+        search_vacation_rentals,
+        find_cultural_activities,
+        find_nearby_attractions,
+        recommend_restaurants,
+        create_visit_itinerary,
+        generate_travel_map,
+        calculate_total_cost,
+        recommend_best_package
+    ]

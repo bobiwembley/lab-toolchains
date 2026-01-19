@@ -87,6 +87,8 @@ class ModelFactory:
             temperature=config["temperature"],
             max_tokens=config["max_tokens"],
             api_key=api_key,
+            # Prompt caching activé via cache_control dans les messages
+            # Voir: https://docs.anthropic.com/claude/docs/prompt-caching
         )
     
     @classmethod
@@ -113,6 +115,8 @@ class ModelFactory:
             max_output_tokens=config["max_output_tokens"],
             project=project,
             location=config["location"],
+            # Context caching pour Gemini est géré automatiquement
+            # par Vertex AI pour les contextes > 32768 tokens
         )
     
     @classmethod

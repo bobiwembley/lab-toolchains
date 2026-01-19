@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_f20e78e22ad984d15605176556eabcb6 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div style="position: fixed; 
+                        bottom: 50px; right: 50px; width: 200px; height: 120px; 
+                        background-color: white; border:2px solid grey; z-index:9999; 
+                        font-size:14px; padding: 10px">
+                <p><strong>Légende</strong></p>
+                <p><i class="fa fa-bed" style="color:blue"></i> Hôtels</p>
+                <p><i class="fa fa-home" style="color:green"></i> Locations</p>
+                <p><i class="fa fa-star" style="color:red"></i> Attractions</p>
+            </div>
+            
+    
+            <div class="folium-map" id="map_f20e78e22ad984d15605176556eabcb6" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_f20e78e22ad984d15605176556eabcb6 = L.map(
+                "map_f20e78e22ad984d15605176556eabcb6",
+                {
+                    center: [41.89432093333333, 12.480143038095239],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 13,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_172d96448c0da914f15d68db268b9caa = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_172d96448c0da914f15d68db268b9caa.addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var marker_fc1f572d6da6ea4dfb50e1f4dcee81d1 = L.marker(
+                [41.8933203, 12.4829321],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_45ae1729bab4eb53e200fc87ed6f9a97 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "bed",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5423108f1848350ff9638974861a2c07 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a10fdd8b99a6ab596567fadda4747cfd = $(`<div id="html_a10fdd8b99a6ab596567fadda4747cfd" style="width: 100.0%; height: 100.0%;">                 <div style='width: 200px'>                     <h4>Rome</h4>                     <p><strong>Type:</strong> city_center</p>                     <p><strong>Adresse:</strong> Roma, Roma Capitale, Lazio, Italia</p>                 </div>                 </div>`)[0];
+                popup_5423108f1848350ff9638974861a2c07.setContent(html_a10fdd8b99a6ab596567fadda4747cfd);
+            
+        
+
+        marker_fc1f572d6da6ea4dfb50e1f4dcee81d1.bindPopup(popup_5423108f1848350ff9638974861a2c07)
+        ;
+
+        
+    
+    
+            marker_fc1f572d6da6ea4dfb50e1f4dcee81d1.bindTooltip(
+                `<div>
+                     Rome
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_fc1f572d6da6ea4dfb50e1f4dcee81d1.setIcon(icon_45ae1729bab4eb53e200fc87ed6f9a97);
+            
+    
+            var marker_7c38c807afeb95e96c107672d4c4f0b0 = L.marker(
+                [41.8935503, 12.4826017],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_bab2e24baa993ce846ead3fdba018e08 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-circle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ae0e05220c3649b1cee70bb90b794310 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_7e50141e32bc1d3681c7f610d7912b7c = $(`<div id="html_7e50141e32bc1d3681c7f610d7912b7c" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Castore</h4>                     <p><strong>Type:</strong> artwork</p>                     <p><strong>Distance:</strong> 0.04 km</p>                 </div></div>`)[0];
+                popup_ae0e05220c3649b1cee70bb90b794310.setContent(html_7e50141e32bc1d3681c7f610d7912b7c);
+            
+        
+
+        marker_7c38c807afeb95e96c107672d4c4f0b0.bindPopup(popup_ae0e05220c3649b1cee70bb90b794310)
+        ;
+
+        
+    
+    
+            marker_7c38c807afeb95e96c107672d4c4f0b0.bindTooltip(
+                `<div>
+                     Castore (0.04 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7c38c807afeb95e96c107672d4c4f0b0.setIcon(icon_bab2e24baa993ce846ead3fdba018e08);
+            
+    
+            var marker_fa32ce0c438a28fa9d401804398100d9 = L.marker(
+                [41.8924641, 12.4836359],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_1bf6aa37c0982474203ab27ae9f8969c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-circle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8ca532b068a64ba22b57ee1286608607 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_d4118798513d7af34892c0b6f522d45a = $(`<div id="html_d4118798513d7af34892c0b6f522d45a" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Forum Romanum view</h4>                     <p><strong>Type:</strong> viewpoint</p>                     <p><strong>Distance:</strong> 0.11 km</p>                 </div></div>`)[0];
+                popup_8ca532b068a64ba22b57ee1286608607.setContent(html_d4118798513d7af34892c0b6f522d45a);
+            
+        
+
+        marker_fa32ce0c438a28fa9d401804398100d9.bindPopup(popup_8ca532b068a64ba22b57ee1286608607)
+        ;
+
+        
+    
+    
+            marker_fa32ce0c438a28fa9d401804398100d9.bindTooltip(
+                `<div>
+                     Forum Romanum view (0.11 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_fa32ce0c438a28fa9d401804398100d9.setIcon(icon_1bf6aa37c0982474203ab27ae9f8969c);
+            
+    
+            var marker_25afaaad2a2ac4203a343e41376b6dcf = L.marker(
+                [41.8978235, 12.4815609],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_561ac15100a1fbfbf2f4ee61c570ad94 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "university",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a62369f2091cbfc4b8e7e734a744b71e = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_92f494e782b419dc9965cefbd4bfbae3 = $(`<div id="html_92f494e782b419dc9965cefbd4bfbae3" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Palazzo Doria Pamphilj</h4>                     <p><strong>Type:</strong> museum</p>                     <p><strong>Distance:</strong> 0.51 km</p>                 <p><strong>Description:</strong> Private collection and home with Caravaggio, Velasquez, Tiziano, Raffaello, Lippi, and others Availa...</p><p><strong>Adresse:</strong> 305 Via del Corso</p><p><a href='https://it.wikipedia.org/wiki/Galleria_Doria_Pamphilj' target='_blank'>Wikipedia →</a></p></div></div>`)[0];
+                popup_a62369f2091cbfc4b8e7e734a744b71e.setContent(html_92f494e782b419dc9965cefbd4bfbae3);
+            
+        
+
+        marker_25afaaad2a2ac4203a343e41376b6dcf.bindPopup(popup_a62369f2091cbfc4b8e7e734a744b71e)
+        ;
+
+        
+    
+    
+            marker_25afaaad2a2ac4203a343e41376b6dcf.bindTooltip(
+                `<div>
+                     Palazzo Doria Pamphilj (0.51 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_25afaaad2a2ac4203a343e41376b6dcf.setIcon(icon_561ac15100a1fbfbf2f4ee61c570ad94);
+            
+    
+            var marker_fbca54f0b0c37e9df157a614bc24b2c3 = L.marker(
+                [41.8893064, 12.4871093],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_30373728d637b9fdc5fd3f504760688b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "star",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e30a08f276adaba624aa03e613be41f8 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_1386fd1ee86d1a8182de691bf21c7f66 = $(`<div id="html_1386fd1ee86d1a8182de691bf21c7f66" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Colle Palatino</h4>                     <p><strong>Type:</strong> attraction</p>                     <p><strong>Distance:</strong> 0.56 km</p>                 <p><a href='https://it.wikipedia.org/wiki/Palatino' target='_blank'>Wikipedia →</a></p></div></div>`)[0];
+                popup_e30a08f276adaba624aa03e613be41f8.setContent(html_1386fd1ee86d1a8182de691bf21c7f66);
+            
+        
+
+        marker_fbca54f0b0c37e9df157a614bc24b2c3.bindPopup(popup_e30a08f276adaba624aa03e613be41f8)
+        ;
+
+        
+    
+    
+            marker_fbca54f0b0c37e9df157a614bc24b2c3.bindTooltip(
+                `<div>
+                     Colle Palatino (0.56 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_fbca54f0b0c37e9df157a614bc24b2c3.setIcon(icon_30373728d637b9fdc5fd3f504760688b);
+            
+    
+            var marker_f9533566326b8a8f39d0e1360cccdc23 = L.marker(
+                [41.8882567, 12.4815441],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_349071a3cab9f6c4bbeb1004b1139948 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-circle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e8c68eb772d35d94e96809b59711588c = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_46e6db7fb1ad431de6395d4652dc3577 = $(`<div id="html_46e6db7fb1ad431de6395d4652dc3577" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Bocca della Verità</h4>                     <p><strong>Type:</strong> artwork</p>                     <p><strong>Distance:</strong> 0.57 km</p>                 <p><a href='https://it.wikipedia.org/wiki/Bocca_della_Verità' target='_blank'>Wikipedia →</a></p></div></div>`)[0];
+                popup_e8c68eb772d35d94e96809b59711588c.setContent(html_46e6db7fb1ad431de6395d4652dc3577);
+            
+        
+
+        marker_f9533566326b8a8f39d0e1360cccdc23.bindPopup(popup_e8c68eb772d35d94e96809b59711588c)
+        ;
+
+        
+    
+    
+            marker_f9533566326b8a8f39d0e1360cccdc23.bindTooltip(
+                `<div>
+                     Bocca della Verità (0.57 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f9533566326b8a8f39d0e1360cccdc23.setIcon(icon_349071a3cab9f6c4bbeb1004b1139948);
+            
+    
+            var marker_4dedc54787326214fdbbf24ed38340d8 = L.marker(
+                [41.8979741, 12.4775597],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_c01969f7a5e5e153ad19b3bf50bd9135 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "monument",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_339691a8383ecc13724b87bc942ae7e0 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_167a8fbb6262ec23285fcd0db8c69677 = $(`<div id="html_167a8fbb6262ec23285fcd0db8c69677" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Obelisco della Minerva</h4>                     <p><strong>Type:</strong> monument</p>                     <p><strong>Distance:</strong> 0.68 km</p>                 <p><a href='https://it.wikipedia.org/wiki/Obelisco_della_Minerva' target='_blank'>Wikipedia →</a></p></div></div>`)[0];
+                popup_339691a8383ecc13724b87bc942ae7e0.setContent(html_167a8fbb6262ec23285fcd0db8c69677);
+            
+        
+
+        marker_4dedc54787326214fdbbf24ed38340d8.bindPopup(popup_339691a8383ecc13724b87bc942ae7e0)
+        ;
+
+        
+    
+    
+            marker_4dedc54787326214fdbbf24ed38340d8.bindTooltip(
+                `<div>
+                     Obelisco della Minerva (0.68 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_4dedc54787326214fdbbf24ed38340d8.setIcon(icon_c01969f7a5e5e153ad19b3bf50bd9135);
+            
+    
+            var marker_9c336d48876ffceb2af3d3e52c70b5a7 = L.marker(
+                [41.8856975, 12.484964],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_7f9f2e2cf2ed34671f7f606b330a14b9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-circle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0d4a23042f5912d8b57d3013cdf4a165 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_7745857bbb1577c9bfcccabfbf69dfa2 = $(`<div id="html_7745857bbb1577c9bfcccabfbf69dfa2" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Belvedere Romolo E Remo</h4>                     <p><strong>Type:</strong> viewpoint</p>                     <p><strong>Distance:</strong> 0.86 km</p>                 </div></div>`)[0];
+                popup_0d4a23042f5912d8b57d3013cdf4a165.setContent(html_7745857bbb1577c9bfcccabfbf69dfa2);
+            
+        
+
+        marker_9c336d48876ffceb2af3d3e52c70b5a7.bindPopup(popup_0d4a23042f5912d8b57d3013cdf4a165)
+        ;
+
+        
+    
+    
+            marker_9c336d48876ffceb2af3d3e52c70b5a7.bindTooltip(
+                `<div>
+                     Belvedere Romolo E Remo (0.86 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_9c336d48876ffceb2af3d3e52c70b5a7.setIcon(icon_7f9f2e2cf2ed34671f7f606b330a14b9);
+            
+    
+            var marker_980916586472ac393c1b8647d933e6bd = L.marker(
+                [41.8938825, 12.4934024],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_ad55e0efa3d2950afaab4d300243a020 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-circle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f4532b2ff52ce971175c5c59c40c68e6 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_738c8104f2d7b72d371ac8e756202879 = $(`<div id="html_738c8104f2d7b72d371ac8e756202879" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Mosè</h4>                     <p><strong>Type:</strong> artwork</p>                     <p><strong>Distance:</strong> 0.87 km</p>                 <p><a href='https://it.wikipedia.org/wiki/Mosè_(Michelangelo)' target='_blank'>Wikipedia →</a></p></div></div>`)[0];
+                popup_f4532b2ff52ce971175c5c59c40c68e6.setContent(html_738c8104f2d7b72d371ac8e756202879);
+            
+        
+
+        marker_980916586472ac393c1b8647d933e6bd.bindPopup(popup_f4532b2ff52ce971175c5c59c40c68e6)
+        ;
+
+        
+    
+    
+            marker_980916586472ac393c1b8647d933e6bd.bindTooltip(
+                `<div>
+                     Mosè (0.87 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_980916586472ac393c1b8647d933e6bd.setIcon(icon_ad55e0efa3d2950afaab4d300243a020);
+            
+    
+            var marker_7858499b6635a1dc3825af16477466e7 = L.marker(
+                [41.8938866, 12.4722011],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_188934f50217807966a1c35f05d9a975 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "university",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2434eaf19128cd32c67a63b8964a0df5 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_bebaf590180084e3494d25813edebcb6 = $(`<div id="html_bebaf590180084e3494d25813edebcb6" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Galleria Spada</h4>                     <p><strong>Type:</strong> museum</p>                     <p><strong>Distance:</strong> 0.89 km</p>                 <p><strong>Adresse:</strong> 13 Piazza Capo di Ferro</p><p><a href='https://it.wikipedia.org/wiki/Galleria_Spada' target='_blank'>Wikipedia →</a></p></div></div>`)[0];
+                popup_2434eaf19128cd32c67a63b8964a0df5.setContent(html_bebaf590180084e3494d25813edebcb6);
+            
+        
+
+        marker_7858499b6635a1dc3825af16477466e7.bindPopup(popup_2434eaf19128cd32c67a63b8964a0df5)
+        ;
+
+        
+    
+    
+            marker_7858499b6635a1dc3825af16477466e7.bindTooltip(
+                `<div>
+                     Galleria Spada (0.89 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_7858499b6635a1dc3825af16477466e7.setIcon(icon_188934f50217807966a1c35f05d9a975);
+            
+    
+            var marker_e41cdd3926802ae5a586b8ea5b0cfa8c = L.marker(
+                [41.8854258, 12.4799081],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_2cad12c64bcb89425ccbdbb58dbec918 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-circle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_915bf48a20fdebd9880a15d19bdd52ea = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_31c2c2adeb0808a337bb66a9c496da60 = $(`<div id="html_31c2c2adeb0808a337bb66a9c496da60" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Giardino degli Aranci</h4>                     <p><strong>Type:</strong> viewpoint</p>                     <p><strong>Distance:</strong> 0.91 km</p>                 </div></div>`)[0];
+                popup_915bf48a20fdebd9880a15d19bdd52ea.setContent(html_31c2c2adeb0808a337bb66a9c496da60);
+            
+        
+
+        marker_e41cdd3926802ae5a586b8ea5b0cfa8c.bindPopup(popup_915bf48a20fdebd9880a15d19bdd52ea)
+        ;
+
+        
+    
+    
+            marker_e41cdd3926802ae5a586b8ea5b0cfa8c.bindTooltip(
+                `<div>
+                     Giardino degli Aranci (0.91 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_e41cdd3926802ae5a586b8ea5b0cfa8c.setIcon(icon_2cad12c64bcb89425ccbdbb58dbec918);
+            
+    
+            var marker_bc4e3de6be84e39a0bbc932d083facde = L.marker(
+                [41.8984018, 12.4742019],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_aabd3278c583acb0a973e96159d1a94d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "star",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8c4db37ea6648f35883948e0cc88cc5d = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_9f087ac9a88e187db681c3851e70114b = $(`<div id="html_9f087ac9a88e187db681c3851e70114b" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Fontana dei Libri</h4>                     <p><strong>Type:</strong> attraction</p>                     <p><strong>Distance:</strong> 0.92 km</p>                 <p><strong>Description:</strong> Artistic fountain in the wall...</p></div></div>`)[0];
+                popup_8c4db37ea6648f35883948e0cc88cc5d.setContent(html_9f087ac9a88e187db681c3851e70114b);
+            
+        
+
+        marker_bc4e3de6be84e39a0bbc932d083facde.bindPopup(popup_8c4db37ea6648f35883948e0cc88cc5d)
+        ;
+
+        
+    
+    
+            marker_bc4e3de6be84e39a0bbc932d083facde.bindTooltip(
+                `<div>
+                     Fontana dei Libri (0.92 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_bc4e3de6be84e39a0bbc932d083facde.setIcon(icon_aabd3278c583acb0a973e96159d1a94d);
+            
+    
+            var marker_a06ee76f78e6c0f823d3683844f77909 = L.marker(
+                [41.8972775, 12.4727772],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_f9fd1ec40dcc1f0d5749b77b1b8d875e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "university",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9f7e6874cc5f075f1bb4bebe5e031969 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_fef26a116c10e26b85bddcfe39745c73 = $(`<div id="html_fef26a116c10e26b85bddcfe39745c73" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Museo di Roma</h4>                     <p><strong>Type:</strong> museum</p>                     <p><strong>Distance:</strong> 0.95 km</p>                 <p><strong>Adresse:</strong> 10 Piazza di San Pantaleo</p><p><a href='https://it.wikipedia.org/wiki/Museo_di_Roma_a_palazzo_Braschi' target='_blank'>Wikipedia →</a></p></div></div>`)[0];
+                popup_9f7e6874cc5f075f1bb4bebe5e031969.setContent(html_fef26a116c10e26b85bddcfe39745c73);
+            
+        
+
+        marker_a06ee76f78e6c0f823d3683844f77909.bindPopup(popup_9f7e6874cc5f075f1bb4bebe5e031969)
+        ;
+
+        
+    
+    
+            marker_a06ee76f78e6c0f823d3683844f77909.bindTooltip(
+                `<div>
+                     Museo di Roma (0.95 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_a06ee76f78e6c0f823d3683844f77909.setIcon(icon_f9fd1ec40dcc1f0d5749b77b1b8d875e);
+            
+    
+            var marker_cde0236f75f1b9c61573bf36c8b5b1d8 = L.marker(
+                [41.8977153, 12.4723082],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_b9ad13527fc72eb7383e8c11acbdc5af = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "monument",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_faa458bf863d7677a85fc0fa49eddcd4 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_17d99a5d7d7788cf88c28f32e8a18012 = $(`<div id="html_17d99a5d7d7788cf88c28f32e8a18012" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Statua "parlante" di Pasquino</h4>                     <p><strong>Type:</strong> memorial</p>                     <p><strong>Distance:</strong> 1.01 km</p>                 <p><a href='https://it.wikipedia.org/wiki/Pasquino' target='_blank'>Wikipedia →</a></p></div></div>`)[0];
+                popup_faa458bf863d7677a85fc0fa49eddcd4.setContent(html_17d99a5d7d7788cf88c28f32e8a18012);
+            
+        
+
+        marker_cde0236f75f1b9c61573bf36c8b5b1d8.bindPopup(popup_faa458bf863d7677a85fc0fa49eddcd4)
+        ;
+
+        
+    
+    
+            marker_cde0236f75f1b9c61573bf36c8b5b1d8.bindTooltip(
+                `<div>
+                     Statua "parlante" di Pasquino (1.01 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_cde0236f75f1b9c61573bf36c8b5b1d8.setIcon(icon_b9ad13527fc72eb7383e8c11acbdc5af);
+            
+    
+            var marker_e10ebf31bb52f995a8af14eba2773315 = L.marker(
+                [41.9019689, 12.4907414],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_f45425a3738705c7becef7c81e2cfc9a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "star",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_47337dddeb322920850177e8944dba22 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_b2b8cea4caac254392e1375cb3dd932a = $(`<div id="html_b2b8cea4caac254392e1375cb3dd932a" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Quattro Fontane</h4>                     <p><strong>Type:</strong> attraction</p>                     <p><strong>Distance:</strong> 1.16 km</p>                 <p><a href='https://it.wikipedia.org/wiki/Quattro_Fontane' target='_blank'>Wikipedia →</a></p></div></div>`)[0];
+                popup_47337dddeb322920850177e8944dba22.setContent(html_b2b8cea4caac254392e1375cb3dd932a);
+            
+        
+
+        marker_e10ebf31bb52f995a8af14eba2773315.bindPopup(popup_47337dddeb322920850177e8944dba22)
+        ;
+
+        
+    
+    
+            marker_e10ebf31bb52f995a8af14eba2773315.bindTooltip(
+                `<div>
+                     Quattro Fontane (1.16 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_e10ebf31bb52f995a8af14eba2773315.setIcon(icon_f45425a3738705c7becef7c81e2cfc9a);
+            
+    
+            var marker_8de2afe612817f0ae5b9d81f5b49a7d0 = L.marker(
+                [41.9011978, 12.4728382],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_d26f8a9b89b99579654c1b2368a95bfc = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "university",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_deed7d612adb88c8f1fb52697fd3cb99 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_d3064c8281fab3428b2dac54c3aab754 = $(`<div id="html_d3064c8281fab3428b2dac54c3aab754" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Museo Nazionale Romano</h4>                     <p><strong>Type:</strong> museum</p>                     <p><strong>Distance:</strong> 1.21 km</p>                 <p><strong>Adresse:</strong> 46 Piazza di Sant'Apollinare</p><p><a href='https://it.wikipedia.org/wiki/Museo_nazionale_romano_di_palazzo_Altemps' target='_blank'>Wikipedia →</a></p></div></div>`)[0];
+                popup_deed7d612adb88c8f1fb52697fd3cb99.setContent(html_d3064c8281fab3428b2dac54c3aab754);
+            
+        
+
+        marker_8de2afe612817f0ae5b9d81f5b49a7d0.bindPopup(popup_deed7d612adb88c8f1fb52697fd3cb99)
+        ;
+
+        
+    
+    
+            marker_8de2afe612817f0ae5b9d81f5b49a7d0.bindTooltip(
+                `<div>
+                     Museo Nazionale Romano (1.21 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_8de2afe612817f0ae5b9d81f5b49a7d0.setIcon(icon_d26f8a9b89b99579654c1b2368a95bfc);
+            
+    
+            var marker_0fb7637522c018dd9780aa3ed103d0c9 = L.marker(
+                [41.8833893, 12.495335],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_4b143cd863f7a2fd15372a48d693db25 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "monument",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c2d66cb7e95970fc99314f1a9b16c05d = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_60ff0a0f0f8aa447b04f2b2e062819b2 = $(`<div id="html_60ff0a0f0f8aa447b04f2b2e062819b2" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Obelisco Matteiano</h4>                     <p><strong>Type:</strong> monument</p>                     <p><strong>Distance:</strong> 1.51 km</p>                 <p><strong>Description:</strong> Urna cineraria di Augusto...</p><p><a href='https://it.wikipedia.org/wiki/Obelisco_di_Villa_Celimontana' target='_blank'>Wikipedia →</a></p></div></div>`)[0];
+                popup_c2d66cb7e95970fc99314f1a9b16c05d.setContent(html_60ff0a0f0f8aa447b04f2b2e062819b2);
+            
+        
+
+        marker_0fb7637522c018dd9780aa3ed103d0c9.bindPopup(popup_c2d66cb7e95970fc99314f1a9b16c05d)
+        ;
+
+        
+    
+    
+            marker_0fb7637522c018dd9780aa3ed103d0c9.bindTooltip(
+                `<div>
+                     Obelisco Matteiano (1.51 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_0fb7637522c018dd9780aa3ed103d0c9.setIcon(icon_4b143cd863f7a2fd15372a48d693db25);
+            
+    
+            var marker_32ce0582a6d2d6b20fb43cb5834fd182 = L.marker(
+                [41.8997977, 12.4657508],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_a4a0fdd3520e6e3916820b2580065d7f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "monument",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1dcea1ada5bda6735fb79ef40aed8a7d = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_fcd4e1e4b7d503d97893102c89f774df = $(`<div id="html_fcd4e1e4b7d503d97893102c89f774df" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Monumento a Terenzio Mamiani della Rovere</h4>                     <p><strong>Type:</strong> memorial</p>                     <p><strong>Distance:</strong> 1.59 km</p>                 </div></div>`)[0];
+                popup_1dcea1ada5bda6735fb79ef40aed8a7d.setContent(html_fcd4e1e4b7d503d97893102c89f774df);
+            
+        
+
+        marker_32ce0582a6d2d6b20fb43cb5834fd182.bindPopup(popup_1dcea1ada5bda6735fb79ef40aed8a7d)
+        ;
+
+        
+    
+    
+            marker_32ce0582a6d2d6b20fb43cb5834fd182.bindTooltip(
+                `<div>
+                     Monumento a Terenzio Mamiani della Rovere (1.59 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_32ce0582a6d2d6b20fb43cb5834fd182.setIcon(icon_a4a0fdd3520e6e3916820b2580065d7f);
+            
+    
+            var marker_0bf39b0f6d33667a666004736ddf4101 = L.marker(
+                [41.9024556, 12.4663556],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_5e5b662e009b2e9918e7e5a1a2823804 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-circle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_23ce6a0587fabccfb8b48bbf0f2a6176 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_0ce989e9cbafbf455166661b8d044cbf = $(`<div id="html_0ce989e9cbafbf455166661b8d044cbf" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Angelo con la spugna</h4>                     <p><strong>Type:</strong> artwork</p>                     <p><strong>Distance:</strong> 1.71 km</p>                 </div></div>`)[0];
+                popup_23ce6a0587fabccfb8b48bbf0f2a6176.setContent(html_0ce989e9cbafbf455166661b8d044cbf);
+            
+        
+
+        marker_0bf39b0f6d33667a666004736ddf4101.bindPopup(popup_23ce6a0587fabccfb8b48bbf0f2a6176)
+        ;
+
+        
+    
+    
+            marker_0bf39b0f6d33667a666004736ddf4101.bindTooltip(
+                `<div>
+                     Angelo con la spugna (1.71 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_0bf39b0f6d33667a666004736ddf4101.setIcon(icon_5e5b662e009b2e9918e7e5a1a2823804);
+            
+    
+            var marker_f66d2cbe8dc4ca7dfc8ae2c910fb7311 = L.marker(
+                [41.8955021, 12.5037397],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_7813309eae3a5d0cd542a4bb43a94369 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-circle",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0e07dd1de40d2273b0d80fc2c2846bdf = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_0122488d166769ce714bb8ab044c5fe3 = $(`<div id="html_0122488d166769ce714bb8ab044c5fe3" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Porta Magica</h4>                     <p><strong>Type:</strong> ruins</p>                     <p><strong>Distance:</strong> 1.74 km</p>                 <p><a href='https://it.wikipedia.org/wiki/Porta_Alchemica' target='_blank'>Wikipedia →</a></p></div></div>`)[0];
+                popup_0e07dd1de40d2273b0d80fc2c2846bdf.setContent(html_0122488d166769ce714bb8ab044c5fe3);
+            
+        
+
+        marker_f66d2cbe8dc4ca7dfc8ae2c910fb7311.bindPopup(popup_0e07dd1de40d2273b0d80fc2c2846bdf)
+        ;
+
+        
+    
+    
+            marker_f66d2cbe8dc4ca7dfc8ae2c910fb7311.bindTooltip(
+                `<div>
+                     Porta Magica (1.74 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_f66d2cbe8dc4ca7dfc8ae2c910fb7311.setIcon(icon_7813309eae3a5d0cd542a4bb43a94369);
+            
+    
+            var marker_62e6dbe039e039b47e9a02084c1cb273 = L.marker(
+                [41.8914458, 12.4615365],
+                {
+}
+            ).addTo(map_f20e78e22ad984d15605176556eabcb6);
+        
+    
+            var icon_300e41c1c4c2c1e0bb3e03ffe4fd06a0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "star",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8f4a410eb8520acd826721982eecf7bc = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_fd50e30a0d96d5fd1f4f45aff5f43020 = $(`<div id="html_fd50e30a0d96d5fd1f4f45aff5f43020" style="width: 100.0%; height: 100.0%;">                 <div style='width: 250px'>                     <h4>Cannone di Mezzogiorno</h4>                     <p><strong>Type:</strong> attraction</p>                     <p><strong>Distance:</strong> 1.78 km</p>                 </div></div>`)[0];
+                popup_8f4a410eb8520acd826721982eecf7bc.setContent(html_fd50e30a0d96d5fd1f4f45aff5f43020);
+            
+        
+
+        marker_62e6dbe039e039b47e9a02084c1cb273.bindPopup(popup_8f4a410eb8520acd826721982eecf7bc)
+        ;
+
+        
+    
+    
+            marker_62e6dbe039e039b47e9a02084c1cb273.bindTooltip(
+                `<div>
+                     Cannone di Mezzogiorno (1.78 km)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_62e6dbe039e039b47e9a02084c1cb273.setIcon(icon_300e41c1c4c2c1e0bb3e03ffe4fd06a0);
+            
+</script>
+</html>
