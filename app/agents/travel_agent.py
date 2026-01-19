@@ -17,6 +17,7 @@ from typing import Dict, Any
 
 from agents.model_factory import ModelFactory, ModelProvider
 from utils.logger import ContextLogger, llm_latency, agent_iterations
+from utils.telemetry import get_telemetry
 
 # Désactiver le logging verbeux de LangChain (on utilise notre système)
 langchain.debug = False
@@ -218,6 +219,13 @@ REPONDS UNIQUEMENT PAR: small_talk, confirmation ou planning"""
         """
         self.model_provider = model_provider
         self.fast_mode = fast_mode
+        self.telemetry = get_telemetry()  # Initialiser OpenTelemetry
+        
+        # Debug: vérifier si telemetry est initialisé
+        if self.telemetry:
+            logger.info("✅ Telemetry enabled for agent", telemetry_active=True)
+        else:
+            logger.warning("⚠️ Telemetry is None - traces will not be created", telemetry_active=False)
         
         # En mode rapide, utiliser seulement les outils essentiels
         if fast_mode:
@@ -400,6 +408,7 @@ REPONDS UNIQUEMENT PAR: small_talk, confirmation ou planning"""
         Chat avec l'agent en mode conversationnel interactif.
         Maintient l'historique des messages pour permettre un contexte continu.
         Détecte automatiquement l'intention pour optimiser le contexte.
+        Instrumenté avec OpenTelemetry pour observabilité complète.
         
         Args:
             user_input: Message de l'utilisateur
@@ -524,11 +533,18 @@ REPONDS UNIQUEMENT PAR: small_talk, confirmation ou planning"""
             final_response = self.llm.invoke(messages)
             
             total_duration = time.time() - start_time
+            total_duration_ms = round(total_duration * 1000, 2)
+            
             logger.info(
                 "✅ Chat completed (max iterations reached)",
                 max_iterations_reached=True,
                 total_duration_seconds=total_duration
             )
+            
+            # Enregistrer les métriques de télémétrie
+            if self.telemetry:
+                # Enregistrer la latence dans les métriques
+                self.telemetry.record_latency(total_duration_ms, intent)
             
             # Ajouter la réponse finale à l'historique
             self.chat_history.append(final_response)
@@ -538,6 +554,11 @@ REPONDS UNIQUEMENT PAR: small_talk, confirmation ou planning"""
             
         except Exception as e:
             total_duration = time.time() - start_time
+            
+            # Enregistrer l'erreur
+            if self.telemetry:
+                self.telemetry.record_error(type(e).__name__, "agent.chat")
+            
             logger.error(
                 "❌ Chat execution failed",
                 error=str(e),

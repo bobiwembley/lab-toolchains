@@ -32,3 +32,19 @@ test_*.py
 dist/
 build/
 *.egg-info/
+
+# Fichiers générés par l'application
+travel_map*.html
+*.map.html
+
+# Scripts de cleanup temporaires
+cleanup_and_reorganize.sh
+finalize_cleanup.sh
+
+# Fichiers générés par l'application
+travel_map*.html
+*.map.html
+
+# Scripts de cleanup temporaires
+cleanup_and_reorganize.sh
+finalize_cleanup.sh

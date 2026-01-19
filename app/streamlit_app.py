@@ -8,9 +8,28 @@ import os
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from utils.logger import ContextLogger
+from utils.telemetry import init_telemetry, get_telemetry
 
 # Logger pour debug
 logger = ContextLogger(__name__)
+
+# Initialiser OpenTelemetry (une seule fois au démarrage)
+if "telemetry_initialized" not in st.session_state:
+    otlp_endpoint = os.getenv("OTLP_ENDPOINT", "localhost:4317")
+    enable_console = os.getenv("OTEL_CONSOLE_EXPORT", "false").lower() == "true"
+    
+    try:
+        init_telemetry(
+            service_name="travel-agent",
+            service_version="1.0.0",
+            otlp_endpoint=otlp_endpoint,
+            enable_console_export=enable_console
+        )
+        st.session_state.telemetry_initialized = True
+        logger.info("✅ OpenTelemetry instrumentation activée", endpoint=otlp_endpoint)
+    except Exception as e:
+        logger.warning(f"⚠️ OpenTelemetry init failed: {e}", error=str(e))
+        st.session_state.telemetry_initialized = False
 
 # Configuration de la page
 st.set_page_config(
@@ -108,6 +127,16 @@ def initialize_session_state():
         st.session_state.agent = create_agent(st.session_state.model_provider)
     if 'trip_data' not in st.session_state:
         st.session_state.trip_data = {}
+    
+    # Initialiser les préférences de voyage
+    if 'departure' not in st.session_state:
+        st.session_state.departure = datetime.now() + timedelta(days=60)
+    if 'return' not in st.session_state:
+        st.session_state['return'] = datetime.now() + timedelta(days=67)
+    if 'cultural' not in st.session_state:
+        st.session_state.cultural = []
+    if 'cuisine' not in st.session_state:
+        st.session_state.cuisine = []
 
 
 def _render_chat_interface():

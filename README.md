@@ -3,6 +3,9 @@
 
 Experimental lab testing LangChain with Gemini 2.0 Flash (Google Vertex AI) and Claude Sonnet (Anthropic) for building a multi-tool conversational agent.
 
+> **📁 Project reorganized** - Code in `app/`, infrastructure in `observability/`  
+> **🚀 Quick start:** [QUICKSTART.md](QUICKSTART.md) | **📚 Documentation index:** [INDEX.md](INDEX.md)
+
 ## 🆕 Version 2.0 - Optimized with Semantic Intent Detection
 
 **Latest improvements:**
@@ -39,20 +42,43 @@ This project explores LangChain's agent framework to create a travel planning as
 
 ```
 lab-toolchains/
-├── agents/              # Main LangChain agent
-│   ├── travel_agent.py  # Unified multi-model agent
-│   └── model_factory.py # Factory for Gemini/Claude
-├── services/            # External API services
-│   ├── flight_service.py
-│   ├── hotel_service.py
-│   ├── rental_service.py
-│   └── restaurant_service.py
-├── tools/               # LangChain tools
-│   └── travel_tools.py  # 12 tools with @tool decorator
-├── utils/               # Logging & Metrics
-│   ├── logger.py
-│   └── metrics_server.py
-└── streamlit_app.py     # Web interface
+├── app/                     # Application principale
+│   ├── agents/              # LangChain agent
+│   │   ├── travel_agent.py  # Unified multi-model agent
+│   │   └── model_factory.py # Factory for Gemini/Claude
+│   ├── services/            # External API services
+│   │   ├── flight_service.py
+│   │   ├── hotel_service.py
+│   │   ├── rental_service.py
+│   │   └── restaurant_service.py
+│   ├── tools/               # LangChain tools
+│   │   └── travel_tools.py  # 12 tools with @tool decorator
+│   ├── utils/               # Utilities
+│   │   ├── logger.py        # Structured logging
+│   │   ├── metrics_server.py # Prometheus metrics
+│   │   └── telemetry.py     # OpenTelemetry (OTLP)
+│   ├── docs/                # Documentation
+│   │   ├── IMPROVEMENTS_SUMMARY.md  # Improvements log
+│   │   ├── INTENT_DETECTION.md      # Intent detection
+│   │   ├── OTLP_INTEGRATION.md      # OpenTelemetry guide
+│   │   ├── OTLP_EXAMPLES.md         # Code examples
+│   │   └── OTLP_STATUS.md           # Current status
+│   ├── streamlit_app.py     # Web UI
+│   ├── main.py              # CLI chatbot
+│   └── requirements.txt     # Python dependencies
+├── observability/           # Infrastructure d'observabilité
+│   ├── docker-compose.yml   # Grafana stack (Tempo/Loki/Prometheus)
+│   ├── start-observability.sh # Quick start script
+│   ├── check_otlp.sh        # Diagnostic tool
+│   ├── grafana/             # Grafana datasources config
+│   ├── tempo/               # Tempo config (traces)
+│   ├── prometheus/          # Prometheus config (metrics)
+│   └── otel-collector/      # OTLP Collector config
+├── examples/                # Exemples d'utilisation
+├── tests/                   # Tests unitaires
+├── logs/                    # Logs de l'application
+├── ARCHITECTURE.md          # System design
+└── README.md
 ```
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed component diagrams and design patterns.
@@ -61,14 +87,15 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed component diagrams and desig
 
 ### Prerequisites
 - Python 3.10+
+- Docker & Docker Compose (for observability)
 - Google Cloud Project with Vertex AI enabled
 - API keys: Amadeus, RapidAPI, Anthropic
 
-### Setup
+### Quick Setup
 
 ```bash
 # Install dependencies
-pip install -r requirements.txt
+pip install -r app/requirements.txt
 
 # Configure secrets
 cp .env.example .env
@@ -79,12 +106,14 @@ gcloud auth application-default login
 gcloud config set project YOUR_PROJECT_ID
 ```
 
+📖 **See [QUICKSTART.md](QUICKSTART.md) for detailed setup instructions**
+
 ## Usage
 
 ### 🆕 Interactive Chatbot (New!)
 ```bash
 # Launch the interactive chatbot interface
-python main.py
+python app/main.py
 ```
 
 Features:
@@ -94,13 +123,17 @@ Features:
 
 ### Web Interface
 ```bash
-streamlit run streamlit_app.py
+streamlit run app/streamlit_app.py
 ```
 
 ### Programmatic Usage
 
 #### Option 1: Chatbot Mode (with memory)
 ```python
+# Ajouter app/ au PYTHONPATH
+import sys
+sys.path.insert(0, 'app')
+
 from agents.travel_agent import TravelAgent
 from agents.model_factory import ModelProvider
 from tools.travel_tools import create_all_tools
@@ -150,17 +183,66 @@ print(result)
 | calculate_total_cost | Budget calculation | Internal |
 | recommend_best_package | Package recommendation | Multi-criteria |
 
-## Monitoring
+## Monitoring & Observability
+
+### 🆕 OpenTelemetry (OTLP) - Production-Grade Observability
+
+Full instrumentation with export to **Grafana Stack** (Tempo + Loki + Prometheus):
+
+```bash
+# Start the Grafana stack
+cd observability
+./start-observability.sh
+
+# Access dashboards
+open http://localhost:3000  # Grafana
+open http://localhost:9090  # Prometheus
+```
+
+**Available observability:**
+- **Distributed tracing** (Tempo): HTTP request traces with auto-instrumentation
+- **Centralized logging** (Loki): Structured JSON logs ready for correlation
+- **Metrics** (Prometheus): LLM tokens, costs, latency, tool performance
+- **Dashboards** (Grafana): Pre-configured datasources for exploration
+
+**Current status: ⚠️ Phase 1 partielle**
+- ✅ HTTP auto-instrumentation working (RequestsInstrumentor)
+- ⏳ Custom spans pending (architectural refactoring required)
+
+See [app/docs/OTLP_STATUS.md](app/docs/OTLP_STATUS.md) for detailed status and Phase 2 roadmap.
+See [app/docs/OTLP_INTEGRATION.md](app/docs/OTLP_INTEGRATION.md) for complete setup guide.
+
+**Key metrics:**
+- `agent.requests.total` - Requests by intent (small_talk/confirmation/planning)
+- `agent.request.duration` - Latency histograms (P50/P95/P99)
+- `agent.llm.tokens` - Token consumption by model (cached vs non-cached)
+- `agent.llm.estimated_cost` - Real-time cost tracking
+- `agent.tool.calls` - Tool execution counts and success rates
+- `agent.errors.total` - Error tracking by type
 
 ### Structured Logs
 ```bash
-tail -f logs/app.json.log
-```Documentation
+tail -f logs/app.json.log | jq
+```
 
-- **[Chatbot Mode Guide](docs/CHATBOT_MODE.md)** - Complete guide to interactive conversations
-- **[Migration Guide](docs/MIGRATION_GUIDE.md)** - How to upgrade from v1.0 to v2.0
+Example log with trace correlation:
+```json
+{
+  "timestamp": "2026-01-19T10:30:00Z",
+  "level": "INFO",
+  "message": "Chat message received",
+  "intent": "planning",
+  "trace_id": "a1b2c3d4e5f6...",
+  "span_id": "1234567890ab"
+}
+```## Documentation
+
+- **[Improvements Summary](app/docs/IMPROVEMENTS_SUMMARY.md)** - Complete optimization history
+- **[Intent Detection](app/docs/INTENT_DETECTION.md)** - Technical deep dive on semantic detection
+- **[OTLP Integration](app/docs/OTLP_INTEGRATION.md)** - OpenTelemetry setup guide (Grafana stack)
+- **[OTLP Status](app/docs/OTLP_STATUS.md)** - Current implementation status and Phase 2 roadmap
+- **[OTLP Examples](app/docs/OTLP_EXAMPLES.md)** - Instrumentation code examples
 - **[Architecture](ARCHITECTURE.md)** - System design and components
-- **[Examples](examples/)** - Usage examples and demos
 
 ## Key Learnings
 

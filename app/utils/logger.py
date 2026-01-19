@@ -9,6 +9,7 @@ from datetime import datetime
 from pythonjsonlogger import jsonlogger
 from prometheus_client import Counter, Histogram, Gauge, REGISTRY, CollectorRegistry
 import time
+from opentelemetry import trace
 
 
 # ============================================================================
@@ -110,7 +111,7 @@ agent_iterations = get_or_create_gauge(
 
 class PrometheusJsonFormatter(jsonlogger.JsonFormatter):
     """
-    Formatter JSON enrichi avec des champs pour Prometheus
+    Formatter JSON enrichi avec des champs pour Prometheus et OpenTelemetry
     """
     
     def add_fields(self, log_record, record, message_dict):
@@ -132,6 +133,14 @@ class PrometheusJsonFormatter(jsonlogger.JsonFormatter):
         log_record['module'] = record.module
         log_record['function'] = record.funcName
         log_record['line'] = record.lineno
+        
+        # Ajouter trace_id et span_id pour corrélation avec OpenTelemetry
+        span = trace.get_current_span()
+        if span and span.is_recording():
+            ctx = span.get_span_context()
+            log_record['trace_id'] = format(ctx.trace_id, '032x')
+            log_record['span_id'] = format(ctx.span_id, '016x')
+            log_record['trace_flags'] = ctx.trace_flags
         
         # Labels Prometheus
         log_record['labels'] = {

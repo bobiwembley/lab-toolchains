@@ -238,9 +238,9 @@ User: "fais le" → confirmation (3 iterations, 6s)
 
 ---
 
-## 🚀 État Actuel du POC
+## 🚀 Current POC Status
 
-### ✅ Fonctionnel
+### ✅ Functional
 - Détection sémantique 3 intents (small_talk, confirmation, planning)
 - Prompt caching Claude + Gemini
 - Prompts conditionnels (LIGHT, FAST, FULL)
@@ -283,7 +283,7 @@ Le POC a **considérablement progressé** :
 - ✅ **0% réponses vides** (critical fix)
 - ✅ **100% robustesse** (prompts adaptés, fallbacks)
 
-**Statut: Production-Ready** pour use case voyage avec limitations documentées (mock data fallback).
+**Status: Production-Ready** for travel use case with documented limitations (mock data fallback).
 
 ---
 

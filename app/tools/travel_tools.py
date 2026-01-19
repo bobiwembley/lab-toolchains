@@ -4,8 +4,10 @@ Modular tool definitions following LangChain best practices
 """
 
 import logging
+import time
 from langchain_core.tools import tool
 from datetime import datetime
+from utils.telemetry import get_telemetry
 
 from services.flight_service import get_flight_service
 from services.rental_service import get_rental_service
@@ -32,16 +34,44 @@ def get_airport_code(city_name: str) -> str:
         - get_airport_code("Rio de Janeiro") → "GIG (Galeão International Airport)"
         - get_airport_code("Tokyo") → "NRT (Narita International Airport)"
     """
+    telemetry = get_telemetry()
+    start_time = time.time()
+    
+    # Créer un span pour l'exécution du tool
+    if telemetry:
+        tool_span = telemetry.trace_tool_call("get_airport_code")
+        span = tool_span.__enter__()
+        span.set_attribute("tool.city_name", city_name)
+    
     try:
         service = get_airport_service()
         result = service.get_airport_code(city_name)
         
         if not result:
+            if telemetry:
+                span.set_attribute("tool.result", "not_found")
+                tool_span.__exit__(None, None, None)
             return f"❌ Code aéroport introuvable pour '{city_name}'. Essaie avec le nom en anglais ou une ville voisine."
+        
+        # Enregistrer les métriques de succès
+        if telemetry:
+            latency_ms = (time.time() - start_time) * 1000
+            span.set_attribute("tool.airport_code", result['code'])
+            span.set_attribute("tool.latency_ms", latency_ms)
+            span.set_attribute("tool.success", True)
+            tool_span.__exit__(None, None, None)
+            telemetry.record_tool_call("get_airport_code", latency_ms, True)
         
         return f"✈️ {result['code']} - {result['name']} ({result['city']}, {result['country']})"
         
     except Exception as e:
+        # Enregistrer l'erreur dans le span
+        if telemetry:
+            span.record_exception(e)
+            span.set_attribute("tool.success", False)
+            tool_span.__exit__(type(e), e, e.__traceback__)
+            telemetry.record_error(type(e).__name__, "tool.get_airport_code")
+        
         logger.error(f"Error in get_airport_code tool: {e}")
         return f"❌ Erreur: {str(e)}"
 
@@ -59,19 +89,52 @@ def search_flights(origin: str, destination: str, departure_date: str, return_da
     Returns:
         Liste formatée des vols avec prix
     """
+    telemetry = get_telemetry()
+    start_time = time.time()
+    
+    # Créer un span pour l'exécution du tool
+    if telemetry:
+        tool_span = telemetry.trace_tool_call("search_flights")
+        span = tool_span.__enter__()
+        span.set_attribute("tool.origin", origin)
+        span.set_attribute("tool.destination", destination)
+        span.set_attribute("tool.departure_date", departure_date)
+        if return_date:
+            span.set_attribute("tool.return_date", return_date)
+    
     try:
         service = get_flight_service()
         flights = service.search_flights(origin, destination, departure_date, return_date)
         
         if not flights:
+            if telemetry:
+                span.set_attribute("tool.result_count", 0)
+                span.set_attribute("tool.success", False)
+                tool_span.__exit__(None, None, None)
             return f"❌ Aucun vol trouvé pour {origin} → {destination}"
         
         result = f"✈️ Vols {origin} → {destination} ({departure_date}):\n\n"
         result += service.format_flights_for_display(flights)
         
+        # Enregistrer les métriques de succès
+        if telemetry:
+            latency_ms = (time.time() - start_time) * 1000
+            span.set_attribute("tool.result_count", len(flights))
+            span.set_attribute("tool.latency_ms", latency_ms)
+            span.set_attribute("tool.success", True)
+            tool_span.__exit__(None, None, None)
+            telemetry.record_tool_call("search_flights", latency_ms, True)
+        
         return result
         
     except Exception as e:
+        # Enregistrer l'erreur dans le span
+        if telemetry:
+            span.record_exception(e)
+            span.set_attribute("tool.success", False)
+            tool_span.__exit__(type(e), e, e.__traceback__)
+            telemetry.record_error(type(e).__name__, "tool.search_flights")
+        
         logger.error(f"Error in search_flights tool: {e}")
         return f"❌ Erreur lors de la recherche: {str(e)}"
 
@@ -89,6 +152,18 @@ def search_hotels(destination: str, checkin_date: str, checkout_date: str, guest
     Returns:
         Liste des hôtels avec prix
     """
+    telemetry = get_telemetry()
+    start_time = time.time()
+    
+    # Créer un span pour l'exécution du tool
+    if telemetry:
+        tool_span = telemetry.trace_tool_call("search_hotels")
+        span = tool_span.__enter__()
+        span.set_attribute("tool.destination", destination)
+        span.set_attribute("tool.checkin_date", checkin_date)
+        span.set_attribute("tool.checkout_date", checkout_date)
+        span.set_attribute("tool.guests", guests)
+    
     try:
         from services.hotel_service import get_hotel_service
         
@@ -124,7 +199,25 @@ def search_hotels(destination: str, checkin_date: str, checkout_date: str, guest
         cheapest = min(hotels, key=lambda x: x.price_per_night)
         result += f"💰 Meilleur prix: ${cheapest.total_price:.0f} - {cheapest.name}"
         
+        # Enregistrer les métriques de succès
+        if telemetry:
+            latency_ms = (time.time() - start_time) * 1000
+            span.set_attribute("tool.result_count", len(hotels))
+            span.set_attribute("tool.latency_ms", latency_ms)
+            span.set_attribute("tool.success", True)
+            tool_span.__exit__(None, None, None)
+            telemetry.record_tool_call("search_hotels", latency_ms, True)
+        
+        return result
+        
     except Exception as e:
+        # Enregistrer l'erreur dans le span
+        if telemetry:
+            span.record_exception(e)
+            span.set_attribute("tool.success", False)
+            tool_span.__exit__(type(e), e, e.__traceback__)
+            telemetry.record_error(type(e).__name__, "tool.search_hotels")
+        
         logger.error(f"Error in search_hotels tool: {e}")
         return f"❌ Erreur: {str(e)}"
 
